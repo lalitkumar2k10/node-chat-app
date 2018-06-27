@@ -23,18 +23,37 @@ io.on('connection',(socket)=>{
 	
 	console.log('new user connected');
 
+
 	socket.on('disconnect',()=>{
 		console.log('user disconnected');
 	});
 
 	socket.on('createMsg',(msg)=>{
 		console.log('create msg request',msg);
-		
+		/*
+		socket.broadcast.emit('newMsg',{
+			from:msg.from,
+			text:msg.text,
+			createdAt:new Date().getTime()
+		});*/
+
 		io.emit('newMsg',{
 			from:msg.from,
 			text:msg.text,
 			createdAt:new Date()
 		});
+	});
+
+	socket.emit('newMsg',{
+		from:'admin',
+		text:'welcome',
+		createdAt:new Date().getTime()
+	});
+
+	socket.broadcast.emit('newMsg',{
+		from:'admin',
+		text:'new joined',
+		createdAt:new Date().getTime()
 	});
 
 	
