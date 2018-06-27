@@ -20,7 +20,7 @@ server.listen(port,()=>{
 
 var io=socketIO(server);
 io.on('connection',(socket)=>{
-	//after connection
+	
 	console.log('new user connected');
 
 	socket.on('disconnect',()=>{
@@ -29,7 +29,7 @@ io.on('connection',(socket)=>{
 
 	socket.on('createMsg',(msg)=>{
 		console.log('create msg request',msg);
-		//sent to everyone
+		
 		io.emit('newMsg',{
 			from:msg.from,
 			text:msg.text,
@@ -37,32 +37,7 @@ io.on('connection',(socket)=>{
 		});
 	});
 
-	/*socket.emit('newMsg',{
-		from:'admin',
-		text:'wellcome',
-		createdAt:123
-	});*/
+	
 });
 
 
-
-/*io.on('connection',(socket)=>{
-	console.log('new user connected');
-
-	socket.emit('newEmail',{
-		from:'abc',
-		text:'xyz',
-		createdAt:123
-	});
-
-	socket.on('createEmail',(newEmail)=>{
-		console.log('crete email',newEmail)
-	});
-
-	socket.on('disconnect',()=>{
-		console.log('user disconnected');
-	});
-});
-
-
-*/
