@@ -23,13 +23,12 @@ io.on('connection',(socket)=>{
 	
 	console.log('new user connected');
 
+	socket.emit('newMessage',generateMessage('admin','welcome'));
 
-	socket.on('disconnect',()=>{
-		console.log('user disconnected');
-	});
+	socket.broadcast.emit('newMessage',generateMessage('admin','new joined'));
 
-	socket.on('createMsg',(msg)=>{
-		console.log('create msg request',msg);
+	socket.on('createMessage',(message,callback)=>{
+		console.log('create msg request',message);
 		/*
 		socket.broadcast.emit('newMsg',{
 			from:msg.from,
@@ -37,14 +36,13 @@ io.on('connection',(socket)=>{
 			createdAt:new Date().getTime()
 		});*/
 
-		io.emit('newMsg',generateMessage(msg.from,msg.text));
+		io.emit('newMessage',generateMessage(message.from,message.text));
+		callback('this is from server');
 	});
 
-	socket.emit('newMsg',generateMessage('admin','welcome'));
-
-	socket.broadcast.emit('newMsg',generateMessage('admin','new joined'));
-
-	
+	socket.on('disconnect',()=>{
+		console.log('user disconnected');
+	});
 });
 
 
