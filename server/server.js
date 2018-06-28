@@ -4,7 +4,7 @@ const express=require('express');
 const socketIO=require('socket.io');
 const http=require('http');
 const port=process.env.PORT||3000
-
+const {generateMessage}=require('./util/message');
 console.log(__dirname+'/../public');
 
 const publicPath=path.join(__dirname,'../public');
@@ -37,24 +37,12 @@ io.on('connection',(socket)=>{
 			createdAt:new Date().getTime()
 		});*/
 
-		io.emit('newMsg',{
-			from:msg.from,
-			text:msg.text,
-			createdAt:new Date()
-		});
+		io.emit('newMsg',generateMessage(msg.from,msg.text));
 	});
 
-	socket.emit('newMsg',{
-		from:'admin',
-		text:'welcome',
-		createdAt:new Date().getTime()
-	});
+	socket.emit('newMsg',generateMessage('admin','welcome'));
 
-	socket.broadcast.emit('newMsg',{
-		from:'admin',
-		text:'new joined',
-		createdAt:new Date().getTime()
-	});
+	socket.broadcast.emit('newMsg',generateMessage('admin','new joined'));
 
 	
 });
