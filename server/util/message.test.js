@@ -1,6 +1,6 @@
 const mocha=require('mocha');
 const expect=require('expect');
-const {generateMessage}=require('./message');
+const {generateMessage,generateLocationMessage}=require('./message');
 describe('generateMessage',()=>{
 	it('should retuen from and text object with date',()=>{
 		var from='jen';
@@ -13,4 +13,21 @@ describe('generateMessage',()=>{
 		});
 	});
 
+});
+
+
+describe('generateLocationMessage',()=>{
+	it('should get current location',()=>{
+		var from='Deb';
+		var latitude=15;
+		var longitude=19;
+		var url=`https://www.google.com/maps?q=15,19`;
+		var message=generateLocationMessage(from,latitude,longitude);
+		expect(message.createdAt).toBeA('number');
+		expect(message).toInclude({
+			from,
+			url
+		});
+
+	})
 });

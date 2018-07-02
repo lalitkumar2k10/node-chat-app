@@ -4,7 +4,7 @@ const express=require('express');
 const socketIO=require('socket.io');
 const http=require('http');
 const port=process.env.PORT||3000
-const {generateMessage}=require('./util/message');
+const {generateMessage,generateLocationMessage}=require('./util/message');
 console.log(__dirname+'/../public');
 
 const publicPath=path.join(__dirname,'../public');
@@ -29,15 +29,13 @@ io.on('connection',(socket)=>{
 
 	socket.on('createMessage',(message,callback)=>{
 		console.log('create msg request',message);
-		/*
-		socket.broadcast.emit('newMsg',{
-			from:msg.from,
-			text:msg.text,
-			createdAt:new Date().getTime()
-		});*/
-
+		
 		io.emit('newMessage',generateMessage(message.from,message.text));
-		callback('this is from server');
+		callback();
+	});
+
+	socket.on('createLocationMessage',(coords)=>{
+		io.emit('newLocationMessage',generateLocationMessage('Admin',`${coords.latitude}`,`${coords.longitude}`));
 	});
 
 	socket.on('disconnect',()=>{
