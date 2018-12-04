@@ -87,7 +87,8 @@ jQuery('#message-form').on('submit',function(e){
 	e.preventDefault();
 	var messageTextbox=jQuery('[name=message]');
 	socket.emit('createMessage',{
-		from:'users',
+		// commented coz - name of user stored in server.
+		// from:'users',
 		text:messageTextbox.val()
 	},function(){
 		// callback to clear text box
